@@ -8,6 +8,7 @@
 #include "EBO.h"
 #include "Texture.h"
 #include "shaderClass.h"
+#include <vector>
 
 class CubeRenderer {
 public:
@@ -16,7 +17,8 @@ public:
 
     void Initialize(Shader& shaderProgra);
     void Render(Shader shader);
-	GLfloat vertices[192] = {
+	void addBlock(float x, float y, float z);
+	std::vector<GLfloat> vertices = {
 		// Bottom face
 		-0.5f, -0.5f,  0.5f,   0.83f, 0.70f, 0.44f,	0.0f, 0.0f,
 		 0.5f, -0.5f,  0.5f,   0.83f, 0.70f, 0.44f,	1.0f, 0.0f,
@@ -58,7 +60,7 @@ public:
 	};
 
 
-	GLuint indices[36] = {
+	std::vector<GLuint> indices = {
 		// Bottom face
 		0, 1, 2,
 		2, 3, 0,

@@ -18,6 +18,7 @@ namespace fs = std::filesystem;
 #include"EBO.h"
 #include"Camera.h"
 #include"cubeRenderer.h"
+#include <vector>
 
 
 
@@ -27,7 +28,7 @@ const unsigned int height = 1080;
 
 //side(left = -), up. forward(away = -)
 // Vertices coordinates
-GLfloat vertices[] = {
+std::vector<GLfloat> vertices = {
 	// Bottom face
 	-0.5f, -0.5f,  0.5f,   0.83f, 0.70f, 0.44f,	0.0f, 0.0f,
 	 0.5f, -0.5f,  0.5f,   0.83f, 0.70f, 0.44f,	1.0f, 0.0f,
@@ -74,7 +75,7 @@ GLfloat vertices[] = {
 };
 
 
-GLuint indices[] = {
+std::vector<GLuint> indices = {
 	//// Bottom face
 	//0, 1, 2,
 	//2, 3, 0,
@@ -145,15 +146,16 @@ int main()
 	Shader shaderProgram("default.vert", "default.frag");
 
 	CubeRenderer cubeRenderer;
+	cubeRenderer.addBlock(1.0f, 1.0f, 1.0f);
 	cubeRenderer.Initialize(shaderProgram);
 	// Generates Vertex Array Object and binds it
 	VAO VAO;
 	VAO.Bind();
 
 	// Generates Vertex Buffer Object and links it to vertices
-	VBO VBO(vertices, sizeof(vertices));
+	VBO VBO(vertices, vertices.size() * sizeof(float));
 	// Generates Element Buffer Object and links it to indices
-	EBO EBO(indices, sizeof(indices));
+	EBO EBO(indices, indices.size() * sizeof(int));
 
 	// Links VBO attributes such as coordinates and colors to VAO
 	VAO.LinkAttrib(VBO, 0, 3, GL_FLOAT, 8 * sizeof(float), (void*)0);
@@ -187,7 +189,7 @@ int main()
 	// Main while loop
 	while (!glfwWindowShouldClose(window))
 	{
-
+		std::cout << vertices.size();
 		camera.Inputs(window);
 		std::cout << camera.Position.x << " " << camera.Position.y << " " << camera.Position.z << std::endl;
 		//if (!camera.CheckCollision(newPosition)) {
@@ -210,7 +212,7 @@ int main()
 		// Bind the VAO so OpenGL knows to use it
 		VAO.Bind();
 		// Draw primitives, number of indices, datatype of indices, index of indices
-		glDrawElements(GL_TRIANGLES, sizeof(indices) / sizeof(int), GL_UNSIGNED_INT, 0);
+		glDrawElements(GL_TRIANGLES, (indices.size() * sizeof(int)) / sizeof(int), GL_UNSIGNED_INT, 0);
 		VAO.Unbind();
 		cubeRenderer.Render(shaderProgram);
 		// Swap the back buffer with the front buffer
