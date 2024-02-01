@@ -9,6 +9,7 @@
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtc/type_ptr.hpp>
 #include "shaderClass.h"
+#include <vector>
 
 class Camera {
 public:
@@ -19,9 +20,9 @@ public:
     void Matrix(float FOVdeg, float nearPlane, float farPlane, Shader& shader, const char* uniform);
     void Move(const glm::vec3& direction);
     void ProcessKeyboardInput(GLFWwindow* window, float deltaTime);
-    void Inputs(GLFWwindow* window);
+    void Inputs(GLFWwindow* window, std::vector<GLfloat> vertices);
     void Jump();
-    void ApplyGravity(float gravity, float deltaTime);
+    void ApplyGravity(float gravity, float deltaTime, std::vector<GLfloat> vertices);
     void Update(float deltaTime);
     void ResetVelocity();
     void ProcessMouseInput(GLFWwindow* window, float deltaTime);
@@ -43,10 +44,11 @@ private:
     double lastMouseX = 0.0;
     double lastMouseY = 0.0;
     float movementSpeed = 3.0f; // Adjust as needed
-    float jumpSpeed = 2.0f;     // Adjust jump strength
+    float jumpSpeed = 4.0f;     // Adjust jump strength
     bool isJumping = false;
     float deltaTime = 0.0f;
     float lastFrame = 0.0f;
+    float floor = 1.6f;
 };
 
 #endif // CAMERA_H

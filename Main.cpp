@@ -65,11 +65,11 @@ std::vector<GLfloat> vertices = {
 	  0.5f,  0.5f, -0.5f,   0.92f, 0.86f, 0.76f,	1.0f, 1.0f,
 	 -0.5f,  0.5f, -0.5f,   0.92f, 0.86f, 0.76f,	0.0f, 1.0f,
 
-	 0.0f, -0.5f,  0.0f,     0.92f, 0.86f, 0.76f,	0.0f, 0.0f,
-	50.0f, -0.5f,  0.0f,     0.92f, 0.86f, 0.76f,	0.0f, 0.0f,
-	 0.0f, -0.5f,  50.0f,     0.92f, 0.86f, 0.76f,	0.0f, 0.0f,
-	 0.0f, -0.5f,  -50.0f,     0.92f, 0.86f, 0.76f,	0.0f, 0.0f,
-	 -50.0f, -0.5f,  0.0f,     0.92f, 0.86f, 0.76f,	0.0f, 0.0f,
+	 0.0f, 0.0f,  0.0f,     0.92f, 0.86f, 0.76f,	0.0f, 0.0f,
+	50.0f, 0.0f,  0.0f,     0.92f, 0.86f, 0.76f,	0.0f, 0.0f,
+	 0.0f, 0.0f,  50.0f,     0.92f, 0.86f, 0.76f,	0.0f, 0.0f,
+	 0.0f, 0.0f,  -50.0f,     0.92f, 0.86f, 0.76f,	0.0f, 0.0f,
+	 -50.0f, 0.0f,  0.0f,     0.92f, 0.86f, 0.76f,	0.0f, 0.0f,
 
 
 };
@@ -146,7 +146,11 @@ int main()
 	Shader shaderProgram("default.vert", "default.frag");
 
 	CubeRenderer cubeRenderer;
-	cubeRenderer.addBlock(1.0f, 1.0f, 1.0f);
+	for (int i = 0; i < 16; i++) {
+		for (int j = 0; j < 16; j++) {
+			cubeRenderer.addBlock(static_cast<float>(i), -1.0f, static_cast<float>(j),i,j);
+		}
+	}
 	cubeRenderer.Initialize(shaderProgram);
 	// Generates Vertex Array Object and binds it
 	VAO VAO;
@@ -176,7 +180,7 @@ int main()
 	*/
 
 	// Original code from the tutorial
-	Texture brickTex("cob.png", GL_TEXTURE_2D, GL_TEXTURE0, GL_RGBA, GL_UNSIGNED_BYTE);
+	Texture brickTex("atlas.png", GL_TEXTURE_2D, GL_TEXTURE0, GL_RGBA, GL_UNSIGNED_BYTE);
 	brickTex.texUnit(shaderProgram, "tex0", 0);
 
 
@@ -187,10 +191,11 @@ int main()
 	// Creates camera object
 		Camera camera(width, height, glm::vec3(0.0f, 0.0f, 10.0f));
 	// Main while loop
+		camera.Position.y = 1.6f;
 	while (!glfwWindowShouldClose(window))
 	{
 		std::cout << vertices.size();
-		camera.Inputs(window);
+		camera.Inputs(window,cubeRenderer.vertices);
 		std::cout << camera.Position.x << " " << camera.Position.y << " " << camera.Position.z << std::endl;
 		//if (!camera.CheckCollision(newPosition)) {
 		//	// If no collision, update the camera's position
@@ -205,14 +210,14 @@ int main()
 
 		// Handles camera inputs
 		// Updates and exports the camera matrix to the Vertex Shader
-		camera.Matrix(45.0f, 0.1f, 100.0f, shaderProgram, "camMatrix");
+		camera.Matrix(100.0f, 0.1f, 100.0f, shaderProgram, "camMatrix");
 
 		// Binds texture so that is appears in rendering
 		brickTex.Bind();
 		// Bind the VAO so OpenGL knows to use it
 		VAO.Bind();
 		// Draw primitives, number of indices, datatype of indices, index of indices
-		glDrawElements(GL_TRIANGLES, (indices.size() * sizeof(int)) / sizeof(int), GL_UNSIGNED_INT, 0);
+		/*glDrawElements(GL_TRIANGLES, (indices.size() * sizeof(int)) / sizeof(int), GL_UNSIGNED_INT, 0);*/
 		VAO.Unbind();
 		cubeRenderer.Render(shaderProgram);
 		// Swap the back buffer with the front buffer

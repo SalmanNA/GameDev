@@ -14,50 +14,47 @@ class CubeRenderer {
 public:
     CubeRenderer();
     ~CubeRenderer();
-
+	
     void Initialize(Shader& shaderProgra);
     void Render(Shader shader);
-	void addBlock(float x, float y, float z);
-	std::vector<GLfloat> vertices = {
-		// Bottom face
-		-0.5f, -0.5f,  0.5f,   0.83f, 0.70f, 0.44f,	0.0f, 0.0f,
-		 0.5f, -0.5f,  0.5f,   0.83f, 0.70f, 0.44f,	1.0f, 0.0f,
-		 0.5f, -0.5f, -0.5f,   0.83f, 0.70f, 0.44f,	1.0f, 1.0f,
-		-0.5f, -0.5f, -0.5f,   0.83f, 0.70f, 0.44f,	0.0f, 1.0f,
+	void addBlock(float x, float y, float z, int rows, int columns);
+    std::vector<GLfloat> vertices = {
+        // Bottom face
+        -0.5f, 999.5f,  0.5f,   0.83f, 0.70f, 0.44f,    0.0f, 0.0f,
+         0.5f, 999.5f,  0.5f,   0.83f, 0.70f, 0.44f,    1.0f, 0.0f,
+         0.5f, 999.5f, -0.5f,   0.83f, 0.70f, 0.44f,    1.0f, 1.0f,
+        -0.5f, 999.5f, -0.5f,   0.83f, 0.70f, 0.44f,    0.0f, 1.0f,
 
-		// Top face
-		-0.5f,  0.5f,  0.5f,   0.92f, 0.86f, 0.76f,	0.0f, 0.0f,
-		 0.5f,  0.5f,  0.5f,   0.92f, 0.86f, 0.76f,	1.0f, 0.0f,
-		 0.5f,  0.5f, -0.5f,   0.92f, 0.86f, 0.76f,	1.0f, 1.0f,
-		-0.5f,  0.5f, -0.5f,   0.92f, 0.86f, 0.76f,	0.0f, 1.0f,
+        // Top face
+        -0.5f, 1000.5f,  0.5f,   0.92f, 0.86f, 0.76f,    0.0f, 0.0f,
+         0.5f, 1000.5f,  0.5f,   0.92f, 0.86f, 0.76f,    1.0f, 0.0f,
+         0.5f, 1000.5f, -0.5f,   0.92f, 0.86f, 0.76f,    1.0f, 1.0f,
+        -0.5f, 1000.5f, -0.5f,   0.92f, 0.86f, 0.76f,    0.0f, 1.0f,
 
-		// Left face
-		-0.5f, -0.5f, -0.5f,   0.92f, 0.86f, 0.76f,	0.0f, 0.0f,
-		-0.5f, -0.5f,  0.5f,   0.92f, 0.86f, 0.76f,	1.0f, 0.0f,
-		-0.5f,  0.5f,  0.5f,   0.92f, 0.86f, 0.76f,	1.0f, 1.0f,
-		-0.5f,  0.5f, -0.5f,   0.92f, 0.86f, 0.76f,	0.0f, 1.0f,
+        // Left face
+        -0.5f, 999.5f, -0.5f,   0.92f, 0.86f, 0.76f,    0.0f, 0.0f,
+        -0.5f, 999.5f,  0.5f,   0.92f, 0.86f, 0.76f,    1.0f, 0.0f,
+        -0.5f, 1000.5f,  0.5f,   0.92f, 0.86f, 0.76f,    1.0f, 1.0f,
+        -0.5f, 1000.5f, -0.5f,   0.92f, 0.86f, 0.76f,    0.0f, 1.0f,
 
-		// Right face
-		 0.5f, -0.5f, -0.5f,   0.92f, 0.86f, 0.76f,	0.0f, 0.0f,
-		 0.5f, -0.5f,  0.5f,   0.92f, 0.86f, 0.76f,	1.0f, 0.0f,
-		 0.5f,  0.5f,  0.5f,   0.92f, 0.86f, 0.76f,	1.0f, 1.0f,
-		 0.5f,  0.5f, -0.5f,   0.92f, 0.86f, 0.76f,	0.0f, 1.0f,
+        // Right face
+         0.5f, 999.5f, -0.5f,   0.92f, 0.86f, 0.76f,    0.0f, 0.0f,
+         0.5f, 999.5f,  0.5f,   0.92f, 0.86f, 0.76f,    1.0f, 0.0f,
+         0.5f, 1000.5f,  0.5f,   0.92f, 0.86f, 0.76f,    1.0f, 1.0f,
+         0.5f, 1000.5f, -0.5f,   0.92f, 0.86f, 0.76f,    0.0f, 1.0f,
 
-		 // Front face
-		 -0.5f, -0.5f,  0.5f,   0.92f, 0.86f, 0.76f,	0.0f, 0.0f,
-		  0.5f, -0.5f,  0.5f,   0.92f, 0.86f, 0.76f,	1.0f, 0.0f,
-		  0.5f,  0.5f,  0.5f,   0.92f, 0.86f, 0.76f,	1.0f, 1.0f,
-		 -0.5f,  0.5f,  0.5f,   0.92f, 0.86f, 0.76f,	0.0f, 1.0f,
+         // Front face
+         -0.5f, 999.5f,  0.5f,   0.92f, 0.86f, 0.76f,    0.0f, 0.0f,
+          0.5f, 999.5f,  0.5f,   0.92f, 0.86f, 0.76f,    1.0f, 0.0f,
+          0.5f, 1000.5f,  0.5f,   0.92f, 0.86f, 0.76f,    1.0f, 1.0f,
+         -0.5f, 1000.5f,  0.5f,   0.92f, 0.86f, 0.76f,    0.0f, 1.0f,
 
-		 // Back face
-		 -0.5f, -0.5f, -0.5f,   0.92f, 0.86f, 0.76f,	0.0f, 0.0f,
-		  0.5f, -0.5f, -0.5f,   0.92f, 0.86f, 0.76f,	1.0f, 0.0f,
-		  0.5f,  0.5f, -0.5f,   0.92f, 0.86f, 0.76f,	1.0f, 1.0f,
-		 -0.5f,  0.5f, -0.5f,   0.92f, 0.86f, 0.76f,	0.0f, 1.0f,
-
-
-
-	};
+         // Back face
+         -0.5f, 999.5f, -0.5f,   0.92f, 0.86f, 0.76f,    0.0f, 0.0f,
+          0.5f, 999.5f, -0.5f,   0.92f, 0.86f, 0.76f,    1.0f, 0.0f,
+          0.5f, 1000.5f, -0.5f,   0.92f, 0.86f, 0.76f,    1.0f, 1.0f,
+         -0.5f, 1000.5f, -0.5f,   0.92f, 0.86f, 0.76f,    0.0f, 1.0f,
+    };
 
 
 	std::vector<GLuint> indices = {
@@ -90,7 +87,7 @@ public:
 	VAO cubeVAO = VAO();
 	VBO cubeVBO = VBO(vertices, sizeof(vertices));
 	EBO cubeEBO = EBO(indices, sizeof(indices));
-	Texture cubeTexture = Texture("cob.png", GL_TEXTURE_2D, GL_TEXTURE0, GL_RGBA, GL_UNSIGNED_BYTE);
+	Texture cubeTexture = Texture("atlas.png", GL_TEXTURE_2D, GL_TEXTURE0, GL_RGBA, GL_UNSIGNED_BYTE);
 };
 
 #endif // CUBE_RENDERER_H

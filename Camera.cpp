@@ -29,21 +29,21 @@ void Camera::Move(const glm::vec3& direction)
 
 void Camera::Jump()
 {
-    if (!isJumping && Position.y == 0.1f) { // Only allow jumping if the camera is at or below the ground level
+    if (!isJumping && Position.y == floor) { // Only allow jumping if the camera is at or below the ground level
         Velocity.y = jumpSpeed;
         isJumping = true;
         std::cout << "JUMPPPPPPPPPPPPPPPPPPP" << std::endl;
     }
 }
 
-void Camera::ApplyGravity(float gravity, float deltaTime)
+void Camera::ApplyGravity(float gravity, float deltaTime, std::vector<GLfloat> vertices)
 {
     // Apply gravity only if the camera is above or at the ground level
-    if (Position.y > 0.1f)
+    if (Position.y > floor)
         Velocity.y += gravity * deltaTime;
     else {
         //Velocity.y = 0.0f; // Stop gravity when at the ground
-        Position.y = 0.1f; // Ensure the camera stays at the ground level
+        Position.y = floor; // Ensure the camera stays at the ground level
     }
 }
 
@@ -51,8 +51,8 @@ void Camera::Update(float deltaTime)
 {
     Position += Velocity * deltaTime;
 
-    if (Position.y < 0.1f) {
-        Position.y = 0.1f;
+    if (Position.y < floor) {
+        Position.y = floor;
         Velocity.y = 0.0f;
         isJumping = false;
     }
@@ -68,18 +68,20 @@ void Camera::ProcessKeyboardInput(GLFWwindow* window, float deltaTime)
     if (glfwGetKey(window, GLFW_KEY_SPACE) == GLFW_PRESS)
         Jump();
 
+    glm::vec3 forward = glm::normalize(glm::vec3(Orientation.x, 0.0f, Orientation.z));
+    glm::vec3 right = glm::normalize(glm::cross(forward, Up));
+
     if (glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS)
-        Move(Orientation * movementSpeed * deltaTime);
+        Move(forward * movementSpeed * deltaTime);
 
     if (glfwGetKey(window, GLFW_KEY_S) == GLFW_PRESS)
-        Move(-Orientation * movementSpeed * deltaTime);
+        Move(-forward * movementSpeed * deltaTime);
 
     if (glfwGetKey(window, GLFW_KEY_A) == GLFW_PRESS)
-        Move(-glm::normalize(glm::cross(Orientation, Up)) * movementSpeed * deltaTime);
+        Move(-right * movementSpeed * deltaTime);
 
     if (glfwGetKey(window, GLFW_KEY_D) == GLFW_PRESS)
-        Move(glm::normalize(glm::cross(Orientation, Up)) * movementSpeed * deltaTime);
-
+        Move(right * movementSpeed * deltaTime);
 }
 void Camera::ProcessMouseInput(GLFWwindow* window, float deltaTime)
 {
@@ -111,7 +113,7 @@ void Camera::ProcessMouseInput(GLFWwindow* window, float deltaTime)
     Orientation = glm::normalize(Orientation);
 }
 
-void Camera::Inputs(GLFWwindow* window)
+void Camera::Inputs(GLFWwindow* window, std::vector<GLfloat> vertices)
 {
     float currentFrame = glfwGetTime();
     deltaTime = currentFrame - lastFrame;
@@ -119,6 +121,6 @@ void Camera::Inputs(GLFWwindow* window)
 
     ProcessKeyboardInput(window, deltaTime);
     ProcessMouseInput(window, deltaTime);
-    ApplyGravity(-9.8f, deltaTime);
+    ApplyGravity(-9.8f, deltaTime, vertices);
     Update(deltaTime);
 }

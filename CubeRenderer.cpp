@@ -33,30 +33,272 @@ void CubeRenderer::Render(Shader shader) {
     cubeVAO.Unbind();
     cubeTexture.Unbind();
 }
-void CubeRenderer::addBlock(float x, float y, float z) {
+void CubeRenderer::addBlock(float x, float y, float z, int rows, int columns) {
+    int atlasWidth = 256;
+    int atlasHeight = 256;
+    float texX = 16.0f / atlasWidth;  // Width of one cell divided by atlas width
+    float texY = 16.0f / atlasHeight; // Height of one cell divided by atlas height
     // Calculate the index offset for the new block
     GLuint vertexOffset = vertices.size() / 8;
 
-    // Add vertices for the new block
-    for (int i = 0; i < 8; i++) {
-        vertices.push_back((i % 2 == 0) ? x - 0.5f : x + 0.5f);
-        vertices.push_back((i / 4 == 0 || (i / 2) % 2 == 0) ? y - 0.5f : y + 0.5f);
-        vertices.push_back((i / 4 == 0 || i / 2 == 1) ? z - 0.5f : z + 0.5f);
-        vertices.push_back(0.92f); // Color values (adjust as needed)
-        vertices.push_back(0.86f);
-        vertices.push_back(0.76f);
-        vertices.push_back((i % 2 == 0) ? 0.0f : 1.0f); // Texture coordinates
-        vertices.push_back((i / 2 == 0) ? 0.0f : 1.0f);
-    }
+    float length = 1.0f; // Assuming the side length of the cube is 1
+    // Front face
+    // Bottom left
+    vertices.push_back(x);
+    vertices.push_back(y);
+    vertices.push_back(z);
+    vertices.push_back(0.92f);
+    vertices.push_back(0.86f);
+    vertices.push_back(0.76f);
+    vertices.push_back(texX * columns);
+    vertices.push_back(texY * rows);
+
+    // Bottom right
+    vertices.push_back(x + length);
+    vertices.push_back(y);
+    vertices.push_back(z);
+    vertices.push_back(0.92f);
+    vertices.push_back(0.86f);
+    vertices.push_back(0.76f);
+    vertices.push_back((texX * columns)+ texX);
+    vertices.push_back(texY * rows);
+
+    // Top right
+    vertices.push_back(x + length);
+    vertices.push_back(y + length);
+    vertices.push_back(z);
+    vertices.push_back(0.92f);
+    vertices.push_back(0.86f);
+    vertices.push_back(0.76f);
+    vertices.push_back((texX * columns)+ texX);
+    vertices.push_back((texY * rows) + texY);
+
+    // Top left
+    vertices.push_back(x);
+    vertices.push_back(y + length);
+    vertices.push_back(z);
+    vertices.push_back(0.92f);
+    vertices.push_back(0.86f);
+    vertices.push_back(0.76f);
+    vertices.push_back(texX * columns);
+    vertices.push_back((texY * rows) + texY);
+
+    // Back face
+    // Bottom left
+    vertices.push_back(x);
+    vertices.push_back(y);
+    vertices.push_back(z + length);
+    vertices.push_back(0.92f);
+    vertices.push_back(0.86f);
+    vertices.push_back(0.76f);
+    vertices.push_back(texX * columns);
+    vertices.push_back(texY * rows);
+
+    // Bottom right
+    vertices.push_back(x + length);
+    vertices.push_back(y);
+    vertices.push_back(z + length);
+    vertices.push_back(0.92f);
+    vertices.push_back(0.86f);
+    vertices.push_back(0.76f);
+    vertices.push_back((texX * columns)+ texX);
+    vertices.push_back(texY * rows);
+
+    // Top right
+    vertices.push_back(x + length);
+    vertices.push_back(y + length);
+    vertices.push_back(z + length);
+    vertices.push_back(0.92f);
+    vertices.push_back(0.86f);
+    vertices.push_back(0.76f);
+    vertices.push_back((texX * columns)+ texX);
+    vertices.push_back((texY * rows) + texY);
+
+    // Top left
+    vertices.push_back(x);
+    vertices.push_back(y + length);
+    vertices.push_back(z + length);
+    vertices.push_back(0.92f);
+    vertices.push_back(0.86f);
+    vertices.push_back(0.76f);
+    vertices.push_back(texX * columns);
+    vertices.push_back((texY * rows) + texY);
+
+    // Top face
+    // Bottom left
+    vertices.push_back(x);
+    vertices.push_back(y + length);
+    vertices.push_back(z);
+    vertices.push_back(0.92f);
+    vertices.push_back(0.86f);
+    vertices.push_back(0.76f);
+    vertices.push_back(texX * columns);
+    vertices.push_back(texY * rows);
+
+    // Bottom right
+    vertices.push_back(x + length);
+    vertices.push_back(y + length);
+    vertices.push_back(z);
+    vertices.push_back(0.92f);
+    vertices.push_back(0.86f);
+    vertices.push_back(0.76f);
+    vertices.push_back((texX * columns)+ texX);
+    vertices.push_back(texY * rows);
+
+    // Top right
+    vertices.push_back(x + length);
+    vertices.push_back(y + length);
+    vertices.push_back(z + length);
+    vertices.push_back(0.92f);
+    vertices.push_back(0.86f);
+    vertices.push_back(0.76f);
+    vertices.push_back((texX * columns)+ texX);
+    vertices.push_back((texY * rows) + texY);
+
+    // Top left
+    vertices.push_back(x);
+    vertices.push_back(y + length);
+    vertices.push_back(z + length);
+    vertices.push_back(0.92f);
+    vertices.push_back(0.86f);
+    vertices.push_back(0.76f);
+    vertices.push_back(texX * columns);
+    vertices.push_back((texY * rows) + texY);
+
+    // Bottom face
+    // Bottom left
+    vertices.push_back(x);
+    vertices.push_back(y);
+    vertices.push_back(z);
+    vertices.push_back(0.92f);
+    vertices.push_back(0.86f);
+    vertices.push_back(0.76f);
+    vertices.push_back(texX * columns);
+    vertices.push_back(texY * rows);
+
+    // Bottom right
+    vertices.push_back(x + length);
+    vertices.push_back(y);
+    vertices.push_back(z);
+    vertices.push_back(0.92f);
+    vertices.push_back(0.86f);
+    vertices.push_back(0.76f);
+    vertices.push_back((texX * columns)+ texX);
+    vertices.push_back(texY * rows);
+
+    // Top right
+    vertices.push_back(x + length);
+    vertices.push_back(y);
+    vertices.push_back(z + length);
+    vertices.push_back(0.92f);
+    vertices.push_back(0.86f);
+    vertices.push_back(0.76f);
+    vertices.push_back((texX * columns)+ texX);
+    vertices.push_back((texY * rows) + texY);
+
+    // Top left
+    vertices.push_back(x);
+    vertices.push_back(y);
+    vertices.push_back(z + length);
+    vertices.push_back(0.92f);
+    vertices.push_back(0.86f);
+    vertices.push_back(0.76f);
+    vertices.push_back(texX * columns);
+    vertices.push_back((texY * rows) + texY);
+
+    // Left face
+    // Bottom left
+    vertices.push_back(x);
+    vertices.push_back(y);
+    vertices.push_back(z + length);
+    vertices.push_back(0.92f);
+    vertices.push_back(0.86f);
+    vertices.push_back(0.76f);
+    vertices.push_back(texX * columns);
+    vertices.push_back(texY * rows);
+
+    // Bottom right
+    vertices.push_back(x);
+    vertices.push_back(y);
+    vertices.push_back(z);
+    vertices.push_back(0.92f);
+    vertices.push_back(0.86f);
+    vertices.push_back(0.76f);
+    vertices.push_back((texX * columns)+ texX);
+    vertices.push_back(texY * rows);
+
+    // Top right
+    vertices.push_back(x);
+    vertices.push_back(y + length);
+    vertices.push_back(z);
+    vertices.push_back(0.92f);
+    vertices.push_back(0.86f);
+    vertices.push_back(0.76f);
+    vertices.push_back((texX * columns)+ texX);
+    vertices.push_back((texY * rows) + texY);
+
+    // Top left
+    vertices.push_back(x);
+    vertices.push_back(y + length);
+    vertices.push_back(z + length);
+    vertices.push_back(0.92f);
+    vertices.push_back(0.86f);
+    vertices.push_back(0.76f);
+    vertices.push_back(texX * columns);
+    vertices.push_back((texY * rows) + texY);
+
+    // Right face
+    // Bottom left
+    vertices.push_back(x + length);
+    vertices.push_back(y);
+    vertices.push_back(z);
+    vertices.push_back(0.92f);
+    vertices.push_back(0.86f);
+    vertices.push_back(0.76f);
+    vertices.push_back(texX * columns);
+    vertices.push_back(texY * rows);
+
+    // Bottom right
+    vertices.push_back(x + length);
+    vertices.push_back(y);
+    vertices.push_back(z + length);
+    vertices.push_back(0.92f);
+    vertices.push_back(0.86f);
+    vertices.push_back(0.76f);
+    vertices.push_back((texX * columns)+ texX);
+    vertices.push_back(texY * rows);
+
+    // Top right
+    vertices.push_back(x + length);
+    vertices.push_back(y + length);
+    vertices.push_back(z + length);
+    vertices.push_back(0.92f);
+    vertices.push_back(0.86f);
+    vertices.push_back(0.76f);
+    vertices.push_back((texX * columns)+ texX);
+    vertices.push_back((texY * rows) + texY);
+
+    // Top left
+    vertices.push_back(x + length);
+    vertices.push_back(y + length);
+    vertices.push_back(z);
+    vertices.push_back(0.92f);
+    vertices.push_back(0.86f);
+    vertices.push_back(0.76f);
+    vertices.push_back(texX * columns);
+    vertices.push_back((texY * rows) + texY);
+
+
 
     // Add indices for the new block
     GLuint cubeIndices[] = {
-        0, 1, 2, 2, 3, 0, // Front face
-        1, 5, 6, 6, 2, 1, // Right face
-        4, 7, 6, 6, 5, 4, // Back face
-        0, 3, 7, 7, 4, 0, // Left face
-        3, 2, 6, 6, 7, 3, // Top face
-        0, 4, 5, 5, 1, 0  // Bottom face
+    0, 1, 2, 2, 3, 0,    // Front face
+    4, 5, 6, 6, 7, 4,    // Back face
+    8, 9, 10, 10, 11, 8,  // Top face
+    12, 13, 14, 14, 15, 12,  // Bottom face
+    16, 17, 18, 18, 19, 16,  // Left face
+    20, 21, 22, 22, 23, 20   // Right face
+
     };
 
     for (int i = 0; i < 36; i++) {
