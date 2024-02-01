@@ -148,7 +148,7 @@ int main()
 	CubeRenderer cubeRenderer;
 	for (int i = 0; i < 16; i++) {
 		for (int j = 0; j < 16; j++) {
-			cubeRenderer.addBlock(static_cast<float>(i), -1.0f, static_cast<float>(j),i,j);
+			cubeRenderer.addBlock(static_cast<float>(i), -1.0f, static_cast<float>(j),15,0, 15, 2, 15, 3, 15, 3, 15, 3, 15, 3);
 		}
 	}
 	cubeRenderer.Initialize(shaderProgram);
@@ -180,7 +180,7 @@ int main()
 	*/
 
 	// Original code from the tutorial
-	Texture brickTex("atlas.png", GL_TEXTURE_2D, GL_TEXTURE0, GL_RGBA, GL_UNSIGNED_BYTE);
+	Texture brickTex("atlas2.png", GL_TEXTURE_2D, GL_TEXTURE0, GL_RGBA, GL_UNSIGNED_BYTE);
 	brickTex.texUnit(shaderProgram, "tex0", 0);
 
 

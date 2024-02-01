@@ -17,7 +17,7 @@ public:
 	
     void Initialize(Shader& shaderProgra);
     void Render(Shader shader);
-	void addBlock(float x, float y, float z, int rows, int columns);
+	void addBlock(float x, float y, float z, int topTexRow, int topTexCol, int botTexRow, int botTexCol, int rightTexRow, int rightTexCol, int leftTexRow, int leftTexCol, int frontTexRow, int frontTexCol, int backTexRow, int backTexCol);
     std::vector<GLfloat> vertices = {
         // Bottom face
         -0.5f, 999.5f,  0.5f,   0.83f, 0.70f, 0.44f,    0.0f, 0.0f,
@@ -88,6 +88,7 @@ public:
 	VBO cubeVBO = VBO(vertices, sizeof(vertices));
 	EBO cubeEBO = EBO(indices, sizeof(indices));
 	Texture cubeTexture = Texture("atlas.png", GL_TEXTURE_2D, GL_TEXTURE0, GL_RGBA, GL_UNSIGNED_BYTE);
+    
 };
 
 #endif // CUBE_RENDERER_H

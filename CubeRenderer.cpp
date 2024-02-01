@@ -33,7 +33,7 @@ void CubeRenderer::Render(Shader shader) {
     cubeVAO.Unbind();
     cubeTexture.Unbind();
 }
-void CubeRenderer::addBlock(float x, float y, float z, int rows, int columns) {
+void CubeRenderer::addBlock(float x, float y, float z, int topTexRow, int topTexCol, int botTexRow, int botTexCol, int rightTexRow, int rightTexCol, int leftTexRow, int leftTexCol, int frontTexRow, int frontTexCol, int backTexRow, int backTexCol) {
     int atlasWidth = 256;
     int atlasHeight = 256;
     float texX = 16.0f / atlasWidth;  // Width of one cell divided by atlas width
@@ -50,8 +50,8 @@ void CubeRenderer::addBlock(float x, float y, float z, int rows, int columns) {
     vertices.push_back(0.92f);
     vertices.push_back(0.86f);
     vertices.push_back(0.76f);
-    vertices.push_back(texX * columns);
-    vertices.push_back(texY * rows);
+    vertices.push_back(texX * frontTexCol);
+    vertices.push_back(texY * frontTexRow);
 
     // Bottom right
     vertices.push_back(x + length);
@@ -60,8 +60,8 @@ void CubeRenderer::addBlock(float x, float y, float z, int rows, int columns) {
     vertices.push_back(0.92f);
     vertices.push_back(0.86f);
     vertices.push_back(0.76f);
-    vertices.push_back((texX * columns)+ texX);
-    vertices.push_back(texY * rows);
+    vertices.push_back((texX * frontTexCol)+ texX);
+    vertices.push_back(texY * frontTexRow);
 
     // Top right
     vertices.push_back(x + length);
@@ -70,8 +70,8 @@ void CubeRenderer::addBlock(float x, float y, float z, int rows, int columns) {
     vertices.push_back(0.92f);
     vertices.push_back(0.86f);
     vertices.push_back(0.76f);
-    vertices.push_back((texX * columns)+ texX);
-    vertices.push_back((texY * rows) + texY);
+    vertices.push_back((texX * frontTexCol)+ texX);
+    vertices.push_back((texY * frontTexRow) + texY);
 
     // Top left
     vertices.push_back(x);
@@ -80,8 +80,8 @@ void CubeRenderer::addBlock(float x, float y, float z, int rows, int columns) {
     vertices.push_back(0.92f);
     vertices.push_back(0.86f);
     vertices.push_back(0.76f);
-    vertices.push_back(texX * columns);
-    vertices.push_back((texY * rows) + texY);
+    vertices.push_back(texX * frontTexCol);
+    vertices.push_back((texY * frontTexRow) + texY);
 
     // Back face
     // Bottom left
@@ -91,8 +91,8 @@ void CubeRenderer::addBlock(float x, float y, float z, int rows, int columns) {
     vertices.push_back(0.92f);
     vertices.push_back(0.86f);
     vertices.push_back(0.76f);
-    vertices.push_back(texX * columns);
-    vertices.push_back(texY * rows);
+    vertices.push_back(texX * backTexCol);
+    vertices.push_back(texY * backTexRow);
 
     // Bottom right
     vertices.push_back(x + length);
@@ -101,8 +101,8 @@ void CubeRenderer::addBlock(float x, float y, float z, int rows, int columns) {
     vertices.push_back(0.92f);
     vertices.push_back(0.86f);
     vertices.push_back(0.76f);
-    vertices.push_back((texX * columns)+ texX);
-    vertices.push_back(texY * rows);
+    vertices.push_back((texX * backTexCol)+ texX);
+    vertices.push_back(texY * backTexRow);
 
     // Top right
     vertices.push_back(x + length);
@@ -111,8 +111,8 @@ void CubeRenderer::addBlock(float x, float y, float z, int rows, int columns) {
     vertices.push_back(0.92f);
     vertices.push_back(0.86f);
     vertices.push_back(0.76f);
-    vertices.push_back((texX * columns)+ texX);
-    vertices.push_back((texY * rows) + texY);
+    vertices.push_back((texX * backTexCol)+ texX);
+    vertices.push_back((texY * backTexRow) + texY);
 
     // Top left
     vertices.push_back(x);
@@ -121,8 +121,8 @@ void CubeRenderer::addBlock(float x, float y, float z, int rows, int columns) {
     vertices.push_back(0.92f);
     vertices.push_back(0.86f);
     vertices.push_back(0.76f);
-    vertices.push_back(texX * columns);
-    vertices.push_back((texY * rows) + texY);
+    vertices.push_back(texX * backTexCol);
+    vertices.push_back((texY * backTexRow) + texY);
 
     // Top face
     // Bottom left
@@ -132,8 +132,8 @@ void CubeRenderer::addBlock(float x, float y, float z, int rows, int columns) {
     vertices.push_back(0.92f);
     vertices.push_back(0.86f);
     vertices.push_back(0.76f);
-    vertices.push_back(texX * columns);
-    vertices.push_back(texY * rows);
+    vertices.push_back(texX * topTexCol);
+    vertices.push_back(texY * topTexRow);
 
     // Bottom right
     vertices.push_back(x + length);
@@ -142,8 +142,8 @@ void CubeRenderer::addBlock(float x, float y, float z, int rows, int columns) {
     vertices.push_back(0.92f);
     vertices.push_back(0.86f);
     vertices.push_back(0.76f);
-    vertices.push_back((texX * columns)+ texX);
-    vertices.push_back(texY * rows);
+    vertices.push_back((texX * topTexCol)+ texX);
+    vertices.push_back(texY * topTexRow);
 
     // Top right
     vertices.push_back(x + length);
@@ -152,8 +152,8 @@ void CubeRenderer::addBlock(float x, float y, float z, int rows, int columns) {
     vertices.push_back(0.92f);
     vertices.push_back(0.86f);
     vertices.push_back(0.76f);
-    vertices.push_back((texX * columns)+ texX);
-    vertices.push_back((texY * rows) + texY);
+    vertices.push_back((texX * topTexCol)+ texX);
+    vertices.push_back((texY * topTexRow) + texY);
 
     // Top left
     vertices.push_back(x);
@@ -162,8 +162,8 @@ void CubeRenderer::addBlock(float x, float y, float z, int rows, int columns) {
     vertices.push_back(0.92f);
     vertices.push_back(0.86f);
     vertices.push_back(0.76f);
-    vertices.push_back(texX * columns);
-    vertices.push_back((texY * rows) + texY);
+    vertices.push_back(texX * topTexCol);
+    vertices.push_back((texY * topTexRow) + texY);
 
     // Bottom face
     // Bottom left
@@ -173,8 +173,8 @@ void CubeRenderer::addBlock(float x, float y, float z, int rows, int columns) {
     vertices.push_back(0.92f);
     vertices.push_back(0.86f);
     vertices.push_back(0.76f);
-    vertices.push_back(texX * columns);
-    vertices.push_back(texY * rows);
+    vertices.push_back(texX * botTexCol);
+    vertices.push_back(texY * botTexRow);
 
     // Bottom right
     vertices.push_back(x + length);
@@ -183,8 +183,8 @@ void CubeRenderer::addBlock(float x, float y, float z, int rows, int columns) {
     vertices.push_back(0.92f);
     vertices.push_back(0.86f);
     vertices.push_back(0.76f);
-    vertices.push_back((texX * columns)+ texX);
-    vertices.push_back(texY * rows);
+    vertices.push_back((texX * botTexCol)+ texX);
+    vertices.push_back(texY * botTexRow);
 
     // Top right
     vertices.push_back(x + length);
@@ -193,8 +193,8 @@ void CubeRenderer::addBlock(float x, float y, float z, int rows, int columns) {
     vertices.push_back(0.92f);
     vertices.push_back(0.86f);
     vertices.push_back(0.76f);
-    vertices.push_back((texX * columns)+ texX);
-    vertices.push_back((texY * rows) + texY);
+    vertices.push_back((texX * botTexCol)+ texX);
+    vertices.push_back((texY * botTexRow) + texY);
 
     // Top left
     vertices.push_back(x);
@@ -203,8 +203,8 @@ void CubeRenderer::addBlock(float x, float y, float z, int rows, int columns) {
     vertices.push_back(0.92f);
     vertices.push_back(0.86f);
     vertices.push_back(0.76f);
-    vertices.push_back(texX * columns);
-    vertices.push_back((texY * rows) + texY);
+    vertices.push_back(texX * botTexCol);
+    vertices.push_back((texY * botTexRow) + texY);
 
     // Left face
     // Bottom left
@@ -214,8 +214,8 @@ void CubeRenderer::addBlock(float x, float y, float z, int rows, int columns) {
     vertices.push_back(0.92f);
     vertices.push_back(0.86f);
     vertices.push_back(0.76f);
-    vertices.push_back(texX * columns);
-    vertices.push_back(texY * rows);
+    vertices.push_back(texX * leftTexCol);
+    vertices.push_back(texY * leftTexRow);
 
     // Bottom right
     vertices.push_back(x);
@@ -224,8 +224,8 @@ void CubeRenderer::addBlock(float x, float y, float z, int rows, int columns) {
     vertices.push_back(0.92f);
     vertices.push_back(0.86f);
     vertices.push_back(0.76f);
-    vertices.push_back((texX * columns)+ texX);
-    vertices.push_back(texY * rows);
+    vertices.push_back((texX * leftTexCol)+ texX);
+    vertices.push_back(texY * leftTexRow);
 
     // Top right
     vertices.push_back(x);
@@ -234,8 +234,8 @@ void CubeRenderer::addBlock(float x, float y, float z, int rows, int columns) {
     vertices.push_back(0.92f);
     vertices.push_back(0.86f);
     vertices.push_back(0.76f);
-    vertices.push_back((texX * columns)+ texX);
-    vertices.push_back((texY * rows) + texY);
+    vertices.push_back((texX * leftTexCol)+ texX);
+    vertices.push_back((texY * leftTexRow) + texY);
 
     // Top left
     vertices.push_back(x);
@@ -244,8 +244,8 @@ void CubeRenderer::addBlock(float x, float y, float z, int rows, int columns) {
     vertices.push_back(0.92f);
     vertices.push_back(0.86f);
     vertices.push_back(0.76f);
-    vertices.push_back(texX * columns);
-    vertices.push_back((texY * rows) + texY);
+    vertices.push_back(texX * leftTexCol);
+    vertices.push_back((texY * leftTexRow) + texY);
 
     // Right face
     // Bottom left
@@ -255,8 +255,8 @@ void CubeRenderer::addBlock(float x, float y, float z, int rows, int columns) {
     vertices.push_back(0.92f);
     vertices.push_back(0.86f);
     vertices.push_back(0.76f);
-    vertices.push_back(texX * columns);
-    vertices.push_back(texY * rows);
+    vertices.push_back(texX * rightTexCol);
+    vertices.push_back(texY * rightTexRow);
 
     // Bottom right
     vertices.push_back(x + length);
@@ -265,8 +265,8 @@ void CubeRenderer::addBlock(float x, float y, float z, int rows, int columns) {
     vertices.push_back(0.92f);
     vertices.push_back(0.86f);
     vertices.push_back(0.76f);
-    vertices.push_back((texX * columns)+ texX);
-    vertices.push_back(texY * rows);
+    vertices.push_back((texX * rightTexCol)+ texX);
+    vertices.push_back(texY * rightTexRow);
 
     // Top right
     vertices.push_back(x + length);
@@ -275,8 +275,8 @@ void CubeRenderer::addBlock(float x, float y, float z, int rows, int columns) {
     vertices.push_back(0.92f);
     vertices.push_back(0.86f);
     vertices.push_back(0.76f);
-    vertices.push_back((texX * columns)+ texX);
-    vertices.push_back((texY * rows) + texY);
+    vertices.push_back((texX * rightTexCol)+ texX);
+    vertices.push_back((texY * rightTexRow) + texY);
 
     // Top left
     vertices.push_back(x + length);
@@ -285,8 +285,8 @@ void CubeRenderer::addBlock(float x, float y, float z, int rows, int columns) {
     vertices.push_back(0.92f);
     vertices.push_back(0.86f);
     vertices.push_back(0.76f);
-    vertices.push_back(texX * columns);
-    vertices.push_back((texY * rows) + texY);
+    vertices.push_back(texX * rightTexCol);
+    vertices.push_back((texY * rightTexRow) + texY);
 
 
 

@@ -54,6 +54,9 @@
     <ClCompile Include="CubeRenderer.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="chunkLoader.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="default.frag">
@@ -88,12 +91,15 @@
     <ClInclude Include="CubeRenderer.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="chunkLoader.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Image Include="C:\Users\salma\OneDrive\Documents\cob.png">
       <Filter>Resource Files\Textures</Filter>
     </Image>
-    <Image Include="C:\Users\salma\OneDrive\Documents\atlas.png">
+    <Image Include="..\..\..\..\OneDrive\Documents\GameDev\GameDev\atlas2.png">
       <Filter>Resource Files\Textures</Filter>
     </Image>
   </ItemGroup>
