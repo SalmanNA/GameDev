@@ -87,7 +87,8 @@ public:
 	VAO cubeVAO = VAO();
 	VBO cubeVBO = VBO(vertices, sizeof(vertices));
 	EBO cubeEBO = EBO(indices, sizeof(indices));
-	Texture cubeTexture = Texture("atlas.png", GL_TEXTURE_2D, GL_TEXTURE0, GL_RGBA, GL_UNSIGNED_BYTE);
+
+	Texture cubeTexture = Texture("atlas2.png", GL_TEXTURE_2D, GL_TEXTURE0, GL_RGBA, GL_UNSIGNED_BYTE);
     
 };
 

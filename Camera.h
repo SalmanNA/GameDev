@@ -23,9 +23,10 @@ public:
     void Inputs(GLFWwindow* window, std::vector<GLfloat> vertices);
     void Jump();
     void ApplyGravity(float gravity, float deltaTime, std::vector<GLfloat> vertices);
-    void Update(float deltaTime);
+    void Update(float deltaTime, std::vector<GLfloat> vertices);
     void ResetVelocity();
     void ProcessMouseInput(GLFWwindow* window, float deltaTime);
+    float CheckCollision(const glm::vec3& cameraPosition, const std::vector<GLfloat>& faceVertices);
 
     // Members
     glm::vec3 Position;
@@ -35,6 +36,7 @@ public:
     int width;
     int height;
     bool firstClick = true;;
+    float coll;
 
 private:
     // Movement parameters

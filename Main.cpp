@@ -18,6 +18,7 @@ namespace fs = std::filesystem;
 #include"EBO.h"
 #include"Camera.h"
 #include"cubeRenderer.h"
+#include "chunkLoader.h"
 #include <vector>
 
 
@@ -145,13 +146,7 @@ int main()
 	// Generates Shader object using shaders default.vert and default.frag
 	Shader shaderProgram("default.vert", "default.frag");
 
-	CubeRenderer cubeRenderer;
-	for (int i = 0; i < 16; i++) {
-		for (int j = 0; j < 16; j++) {
-			cubeRenderer.addBlock(static_cast<float>(i), -1.0f, static_cast<float>(j),15,0, 15, 2, 15, 3, 15, 3, 15, 3, 15, 3);
-		}
-	}
-	cubeRenderer.Initialize(shaderProgram);
+	chunkLoader chunk(shaderProgram);
 	// Generates Vertex Array Object and binds it
 	VAO VAO;
 	VAO.Bind();
@@ -194,9 +189,8 @@ int main()
 		camera.Position.y = 1.6f;
 	while (!glfwWindowShouldClose(window))
 	{
-		std::cout << vertices.size();
-		camera.Inputs(window,cubeRenderer.vertices);
-		std::cout << camera.Position.x << " " << camera.Position.y << " " << camera.Position.z << std::endl;
+		camera.Inputs(window,chunk.cubeRenderer.vertices);
+		//std::cout << camera.Position.x << " " << camera.Position.y << " " << camera.Position.z << std::endl;
 		//if (!camera.CheckCollision(newPosition)) {
 		//	// If no collision, update the camera's position
 		//	camera.Move(glm::vec3(0.0f, deltaY, 0.0f));
@@ -219,7 +213,7 @@ int main()
 		// Draw primitives, number of indices, datatype of indices, index of indices
 		/*glDrawElements(GL_TRIANGLES, (indices.size() * sizeof(int)) / sizeof(int), GL_UNSIGNED_INT, 0);*/
 		VAO.Unbind();
-		cubeRenderer.Render(shaderProgram);
+		chunk.cubeRenderer.Render(shaderProgram);
 		// Swap the back buffer with the front buffer
 		glfwSwapBuffers(window);
 		// Take care of all GLFW events

@@ -1,11 +1,14 @@
 #ifndef CHUCNK_LOADER_H
 #define CHUCNK_LOADER_H
 
+#include "cubeRenderer.h"
+
 class chunkLoader
 {
 public:
-	chunkLoader();
+	chunkLoader(Shader shaderProgram);
 	~chunkLoader();
+	CubeRenderer cubeRenderer;
 
 };
 

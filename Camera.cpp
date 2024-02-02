@@ -9,6 +9,7 @@ Camera::Camera(int width, int height, glm::vec3 position)
     Position = position;
     Orientation = glm::vec3(0.0f, 0.0f, 0.0f);
     Up = glm::vec3(0.0f, 1.0f, 0.0f);
+    
 }
 
 void Camera::Matrix(float FOVdeg, float nearPlane, float farPlane, Shader& shader, const char* uniform)
@@ -29,30 +30,31 @@ void Camera::Move(const glm::vec3& direction)
 
 void Camera::Jump()
 {
-    if (!isJumping && Position.y == floor) { // Only allow jumping if the camera is at or below the ground level
+    if (!isJumping && coll != 999) { // Only allow jumping if the camera is at or below the ground level
         Velocity.y = jumpSpeed;
+        
         isJumping = true;
-        std::cout << "JUMPPPPPPPPPPPPPPPPPPP" << std::endl;
     }
 }
 
 void Camera::ApplyGravity(float gravity, float deltaTime, std::vector<GLfloat> vertices)
 {
+    
     // Apply gravity only if the camera is above or at the ground level
-    if (Position.y > floor)
+    if (coll == 999)
         Velocity.y += gravity * deltaTime;
     else {
         //Velocity.y = 0.0f; // Stop gravity when at the ground
-        Position.y = floor; // Ensure the camera stays at the ground level
+        Position.y = coll; // Ensure the camera stays at the ground level
     }
 }
 
-void Camera::Update(float deltaTime)
+void Camera::Update(float deltaTime, std::vector<GLfloat> vertices)
 {
     Position += Velocity * deltaTime;
-
-    if (Position.y < floor) {
-        Position.y = floor;
+    CheckCollision(Position, vertices);
+    if (coll != 999) {
+        Position.y = coll;
         Velocity.y = 0.0f;
         isJumping = false;
     }
@@ -115,12 +117,45 @@ void Camera::ProcessMouseInput(GLFWwindow* window, float deltaTime)
 
 void Camera::Inputs(GLFWwindow* window, std::vector<GLfloat> vertices)
 {
+    //std::cout << Velocity.x << std::endl;
+    //std::cout << Velocity.y << std::endl;
+    //std::cout << Velocity.z << std::endl;
     float currentFrame = glfwGetTime();
     deltaTime = currentFrame - lastFrame;
     lastFrame = currentFrame;
-
+    Update(deltaTime, vertices);
     ProcessKeyboardInput(window, deltaTime);
     ProcessMouseInput(window, deltaTime);
     ApplyGravity(-9.8f, deltaTime, vertices);
-    Update(deltaTime);
+}
+float Camera::CheckCollision(const glm::vec3& cameraPosition, const std::vector<GLfloat>& faceVertices)
+{
+    // Assuming the camera has a bounding box (or bounding sphere)
+    glm::vec3 cameraMin = cameraPosition - glm::vec3(0.0f, 1.6f, 0.0f);
+    glm::vec3 cameraMax = cameraPosition + glm::vec3(0.0f, 1.6f, 0.0f);
+
+    // Check for collision with each face's bounding box
+    for (int i = 0; i < faceVertices.size(); i += 24) {
+        // Extract the vertices of the face
+        glm::vec3 faceVertex1(faceVertices[i], faceVertices[i + 1], faceVertices[i + 2]);
+        glm::vec3 faceVertex2(faceVertices[i + 8], faceVertices[i + 9], faceVertices[i + 10]);
+        glm::vec3 faceVertex3(faceVertices[i + 16], faceVertices[i + 17], faceVertices[i + 18]);
+
+        // Calculate the bounding box of the face
+        glm::vec3 faceMin = glm::min(glm::min(faceVertex1, faceVertex2), faceVertex3);
+        glm::vec3 faceMax = glm::max(glm::max(faceVertex1, faceVertex2), faceVertex3);
+
+        // Check for collision between camera and face bounding boxes
+        if (cameraMax.x >= faceMin.x && cameraMin.x <= faceMax.x &&
+            cameraMax.y >= faceMin.y && cameraMin.y <= faceMax.y &&
+            cameraMax.z >= faceMin.z && cameraMin.z <= faceMax.z) {
+            // Collision detected
+            coll = cameraPosition.y;
+            return cameraPosition.y;
+        }
+    }
+
+    // No collision detected
+    coll = 999;
+    return 999;
 }
