@@ -186,7 +186,7 @@ int main()
 	// Creates camera object
 		Camera camera(width, height, glm::vec3(0.0f, 0.0f, 10.0f));
 	// Main while loop
-		camera.Position.y = 1.6f;
+		//camera.Position.y = 1.6f;
 	while (!glfwWindowShouldClose(window))
 	{
 		camera.Inputs(window,chunk.cubeRenderer.vertices);

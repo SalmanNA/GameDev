@@ -37,6 +37,10 @@ public:
     int height;
     bool firstClick = true;;
     float coll;
+    float collSide;
+    float collFront;
+    bool side;
+    bool top;
 
 private:
     // Movement parameters

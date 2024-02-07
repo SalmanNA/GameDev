@@ -45,7 +45,7 @@ void Camera::ApplyGravity(float gravity, float deltaTime, std::vector<GLfloat> v
         Velocity.y += gravity * deltaTime;
     else {
         //Velocity.y = 0.0f; // Stop gravity when at the ground
-        Position.y = coll; // Ensure the camera stays at the ground level
+         // Ensure the camera stays at the ground level
     }
 }
 
@@ -54,7 +54,6 @@ void Camera::Update(float deltaTime, std::vector<GLfloat> vertices)
     Position += Velocity * deltaTime;
     CheckCollision(Position, vertices);
     if (coll != 999) {
-        Position.y = coll;
         Velocity.y = 0.0f;
         isJumping = false;
     }
@@ -131,28 +130,78 @@ void Camera::Inputs(GLFWwindow* window, std::vector<GLfloat> vertices)
 float Camera::CheckCollision(const glm::vec3& cameraPosition, const std::vector<GLfloat>& faceVertices)
 {
     // Assuming the camera has a bounding box (or bounding sphere)
-    glm::vec3 cameraMin = cameraPosition - glm::vec3(0.0f, 1.6f, 0.0f);
-    glm::vec3 cameraMax = cameraPosition + glm::vec3(0.0f, 1.6f, 0.0f);
+    glm::vec3 cameraMin = cameraPosition - glm::vec3(0.2f, 1.6f, 0.2f);
+    glm::vec3 cameraMax = cameraPosition + glm::vec3(0.2f, 0.0f, 0.2f);
 
     // Check for collision with each face's bounding box
-    for (int i = 0; i < faceVertices.size(); i += 24) {
+    for (int i = 0; i < faceVertices.size(); i += 192) {
         // Extract the vertices of the face
         glm::vec3 faceVertex1(faceVertices[i], faceVertices[i + 1], faceVertices[i + 2]);
-        glm::vec3 faceVertex2(faceVertices[i + 8], faceVertices[i + 9], faceVertices[i + 10]);
-        glm::vec3 faceVertex3(faceVertices[i + 16], faceVertices[i + 17], faceVertices[i + 18]);
-
+        //1 2 3 
+        //3 4 1
         // Calculate the bounding box of the face
-        glm::vec3 faceMin = glm::min(glm::min(faceVertex1, faceVertex2), faceVertex3);
-        glm::vec3 faceMax = glm::max(glm::max(faceVertex1, faceVertex2), faceVertex3);
+        glm::vec3 overlap;
+        glm::vec3 faceMin = glm::vec3(faceVertex1.x, faceVertex1.y, faceVertex1.z);
+        glm::vec3 faceMax = glm::vec3(faceVertex1.x + 1.0f, faceVertex1.y + 1.0f, faceVertex1.z + 1.0f);
+        overlap.x = std::max(0.0f, std::min(cameraMax.x, faceMax.x) - std::max(cameraMin.x, faceMin.x));
+        overlap.y = std::max(0.0f, std::min(cameraMax.y, faceMax.y) - std::max(cameraMin.y, faceMin.y));
+        overlap.z = std::max(0.0f, std::min(cameraMax.z, faceMax.z) - std::max(cameraMin.z, faceMin.z));
+        if (overlap.x > 0.0f && overlap.y > 0.0f && overlap.z > 0.0f){
+            if (overlap.x <= overlap.y && overlap.x <= overlap.z)
+            {
+                Move(glm::vec3(overlap.x, 0.0f, 0.0f));
+            }
+            else if (overlap.y <= overlap.x && overlap.y <= overlap.z)
+            {
+                Move(glm::vec3(0.0f, overlap.y, 0.0f));
+            }
+            else
+            {
+                Move(glm::vec3(0.0f, 0.0f, overlap.z));
 
-        // Check for collision between camera and face bounding boxes
-        if (cameraMax.x >= faceMin.x && cameraMin.x <= faceMax.x &&
-            cameraMax.y >= faceMin.y && cameraMin.y <= faceMax.y &&
-            cameraMax.z >= faceMin.z && cameraMin.z <= faceMax.z) {
-            // Collision detected
-            coll = cameraPosition.y;
-            return cameraPosition.y;
+            }
+
+            coll = 998;
+            return 998;
         }
+        //float overlapX = std::min(cameraMax.x, faceMax.x) - std::max(cameraMin.x, faceMin.x);
+        //float overlapY = std::min(cameraMax.y, faceMax.y) - std::max(cameraMin.y, faceMin.y);
+        //float overlapZ = std::min(cameraMax.z, faceMax.z) - std::max(cameraMin.z, faceMin.z);
+
+
+        //std::cout << "Overlap along Y-axis: " << overlapY << std::endl;
+
+        //Move(glm::vec3(overlapX, overlapY, overlapZ));
+
+        // If any of the above checks are true, there is no overlap
+        // Otherwise, there is an overlap
+
+        // Check for collision between camera and face bounding box
+        //if (cameraMax.x >= faceMin.x && cameraMin.x <= faceMax.x &&
+        //    cameraMax.y >= faceMin.y && cameraMin.y <= faceMax.y &&
+        //    cameraMax.z >= faceMin.z && cameraMin.z <= faceMax.z) {
+        //    int faceNumber = (i / 32) % 6;
+        //    std::cout << faceMin.y << " " << faceMax.y << " " << Position.y << std::endl;
+        //    if ((faceMin.y - cameraMin.y) < (faceMax.y - cameraMax.y)) {
+        //        Move(glm::vec3(0.0f, (faceMin.y - cameraMin.y), 0.0f));
+        //        coll = Position.y + (faceMin.y - cameraMin.y) + 1.6f;
+        //    }
+        //    else {
+        //        coll = Position.y + (faceMax.y - cameraMax.y) + 1.6f;
+        //    }
+        //    return cameraPosition.y;
+        //    // Collision detected
+        //    // Check if the collision is on the top face of the side face
+        //                // Check if the collision is on the side face
+        //    //if (cameraPosition.y >= faceMin.y + 1.6f && cameraPosition.y <= faceMax.y + 1.6f) {
+        //    //    // Collision detected on the side face
+
+        //    //    coll = cameraPosition.y;
+        //    //    return cameraPosition.y;
+        //    //}
+
+
+        //}
     }
 
     // No collision detected
